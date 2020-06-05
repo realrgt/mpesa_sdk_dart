@@ -71,8 +71,16 @@ All you need is assigning your call to a property of type Response (From [http](
 
 ```dart
 Response response = await MpesaTransaction.c2b(token, payload);
-  print(response.body);
+print(response.body);
 ```
+
+## Credits
+
+| Contributors |
+|--------------|
+| [Ergito Vilanculos](https://github.com/realrgt) |
+
+----------------------------
 
 ## Copyright and license
 
