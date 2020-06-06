@@ -5,11 +5,11 @@ Dart package for M-Pesa API (Mozambique)
 Ready Methods/APIs
 
 - [x] C2B
-- [ ] B2B
-- [ ] B2C
-- [ ] TRANSACTION STATUS
+- [x] B2B
+- [x] B2C
+- [x] TRANSACTION STATUS
 - [ ] ACCOUNT BALANCE
-- [ ] REVERSAL
+- [x] REVERSAL
 
 ## Requisites
 We highly recommend reading Mpesa API [docs](https://developer.mpesa.vm.co.mz/) first!
@@ -71,6 +71,111 @@ All you need is assigning your call to a property of type Response (From [http](
 
 ```dart
 Response response = await MpesaTransaction.c2b(token, payload);
+print(response.body);
+```
+
+### B2C Api Call
+
+#### Initialize your payload
+
+```dart
+PaymentRequest payload = PaymentRequest(
+    inputTransactionReference: 'inputTransactionReference',
+    inputCustomerMsisdn: '25884xxxxxxx',
+    inputAmount: inputAmount,
+    inputThirdPartyReference: 'inputThirdPartyReference',
+    inputServiceProviderCode: 'inputServiceProviderCode',
+  );
+```
+
+#### Perform the api call
+
+```dart
+MpesaTransaction.b2c(token, payload);
+```
+
+### Handle response
+
+All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
+
+```dart
+Response response = await MpesaTransaction.b2c(token, payload);
+print(response.body);
+```
+
+### REVERSAL Api Call
+
+#### Initialize your payload
+
+```dart
+ReversalRequest payload = ReversalRequest(
+        inputInitiatorIdentifier: "MPesa2018",
+        inputTransactionID: transactioID,
+        inputSecurityCredential: "Mpesa2019",
+        inputServiceProviderCode: "171717",
+        inputReversalAmount: montant,
+        inputThirdPartyReference: "11114");
+```
+
+#### Perform the api call
+
+```dart
+MpesaTransaction.reversal(token, payload);
+```
+
+### Handle response
+
+All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
+
+```dart
+Response response = await MpesaTransaction.reversal(token, payload);
+    print(response.body);
+```
+
+### B2B Api Call
+
+#### Initialize your payload
+
+```dart
+TransferRequest payload = TransferRequest(
+        inputTransactionReference: 'T12344C',
+        inputPrimaryPartyCode: '171717',
+        inputAmount: inputAmount,
+        inputThirdPartyReference: '11114',
+        inputReceiverPartyCode: "979797");
+```
+
+#### Perform the api call
+
+```dart
+MpesaTransaction.b2b(token, payload);
+```
+
+### Handle response
+
+All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
+
+```dart
+    Response response = await MpesaTransaction.b2b(token, payload);
+    print(response.body);
+```
+
+### TRANSACTION STATUS Api Call
+
+#### Perform the api call
+
+```dart
+MpesaTransaction.getTransactionStatus(
+        token, "11114", transactionId, "171717");
+```
+
+### Handle response
+
+All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
+
+```dart
+   Response response = await MpesaTransaction.getTransactionStatus(
+        token, "11114", transactionId, "171717");
 print(response.body);
 ```
 
