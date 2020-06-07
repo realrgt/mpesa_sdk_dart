@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-ReversalRequest reversalRequestFromJson(String str) =>
-    ReversalRequest.fromJson(json.decode(str));
+ReversalRequest reversalRequestFromJson(String str) => ReversalRequest.fromJson(json.decode(str));
 
-String reversalRequestToJson(ReversalRequest data) =>
-    json.encode(data.toJson());
+String reversalRequestToJson(ReversalRequest data) => json.encode(data.toJson());
 
 class ReversalRequest {
+
   String inputTransactionID;
   String inputSecurityCredential;
   String inputInitiatorIdentifier;
@@ -14,13 +13,14 @@ class ReversalRequest {
   String inputServiceProviderCode;
   double inputReversalAmount;
 
-  ReversalRequest(
-      {this.inputTransactionID,
-      this.inputSecurityCredential,
-      this.inputInitiatorIdentifier,
-      this.inputThirdPartyReference,
-      this.inputServiceProviderCode,
-      this.inputReversalAmount});
+  ReversalRequest({
+    this.inputTransactionID,
+    this.inputSecurityCredential,
+    this.inputInitiatorIdentifier,
+    this.inputThirdPartyReference,
+    this.inputServiceProviderCode,
+    this.inputReversalAmount,
+  });
 
   ReversalRequest.fromJson(Map<String, dynamic> json) {
     inputTransactionID = json['input_TransactionID'];
@@ -41,4 +41,5 @@ class ReversalRequest {
     data['input_ReversalAmount'] = this.inputReversalAmount;
     return data;
   }
+  
 }

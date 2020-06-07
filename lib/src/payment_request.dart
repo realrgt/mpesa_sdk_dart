@@ -9,6 +9,7 @@ PaymentRequest paymentRequestFromJson(String str) => PaymentRequest.fromJson(jso
 String paymentRequestToJson(PaymentRequest data) => json.encode(data.toJson());
 
 class PaymentRequest {
+
   PaymentRequest({
     this.inputTransactionReference,
     this.inputCustomerMsisdn,
@@ -38,4 +39,5 @@ class PaymentRequest {
     "input_ThirdPartyReference": inputThirdPartyReference,
     "input_ServiceProviderCode": inputServiceProviderCode,
   };
+  
 }

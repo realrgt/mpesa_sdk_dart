@@ -1,25 +1,27 @@
 import 'dart:convert';
 
-OutputResponse responseFromJson(String str) =>
-    OutputResponse.fromJson(json.decode(str));
+PaymentResponse responseFromJson(String str) =>
+    PaymentResponse.fromJson(json.decode(str));
 
-String responseToJson(OutputResponse data) => json.encode(data.toJson());
+String responseToJson(PaymentResponse data) => json.encode(data.toJson());
 
-class OutputResponse {
+class PaymentResponse {
+
   String outputResponseCode;
   String outputResponseDesc;
   String outputTransactionID;
   String outputConversationID;
   String outputThirdPartyReference;
 
-  OutputResponse(
-      {this.outputResponseCode,
-      this.outputResponseDesc,
-      this.outputTransactionID,
-      this.outputConversationID,
-      this.outputThirdPartyReference});
+  PaymentResponse({
+    this.outputResponseCode,
+    this.outputResponseDesc,
+    this.outputTransactionID,
+    this.outputConversationID,
+    this.outputThirdPartyReference,
+  });
 
-  OutputResponse.fromJson(Map<String, dynamic> json) {
+  PaymentResponse.fromJson(Map<String, dynamic> json) {
     outputResponseCode = json['output_ResponseCode'];
     outputResponseDesc = json['output_ResponseDesc'];
     outputTransactionID = json['output_TransactionID'];
@@ -36,4 +38,5 @@ class OutputResponse {
     data['output_ThirdPartyReference'] = this.outputThirdPartyReference;
     return data;
   }
+  
 }
