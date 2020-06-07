@@ -1,5 +1,7 @@
 # mpesa_sdk_dart
 
+[![pub package](https://img.shields.io/pub/v/provider.svg)](https://pub.dev/packages/mpesa_sdk_dart)
+
 Dart package for M-Pesa API (Mozambique)
 
 Ready Methods/APIs
@@ -22,7 +24,7 @@ You Will need a few things from there before development.
 - Login or Register as a M-Pesa developer [here](https://developer.mpesa.vm.co.mz/accounts/login/?next=/accounts/signup/) if you haven't.
 - You will be issued with an API Key and a Public Key. You will use these to generate your access token.
 
-## Getting Started
+## Usage
 
 Add dependency in pubspec.yaml
 
@@ -65,15 +67,6 @@ PaymentRequest payload = PaymentRequest(
 MpesaTransaction.c2b(token, payload);
 ```
 
-### Handle response
-
-All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
-
-```dart
-Response response = await MpesaTransaction.c2b(token, payload);
-print(response.body);
-```
-
 ### B2C Api Call
 
 #### Initialize your payload
@@ -94,27 +87,19 @@ PaymentRequest payload = PaymentRequest(
 MpesaTransaction.b2c(token, payload);
 ```
 
-### Handle response
-
-All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
-
-```dart
-Response response = await MpesaTransaction.b2c(token, payload);
-print(response.body);
-```
-
-### REVERSAL Api Call
+### Reversal Api Call
 
 #### Initialize your payload
 
 ```dart
 ReversalRequest payload = ReversalRequest(
-        inputInitiatorIdentifier: "MPesa2018",
-        inputTransactionID: transactioID,
-        inputSecurityCredential: "Mpesa2019",
-        inputServiceProviderCode: "171717",
-        inputReversalAmount: montant,
-        inputThirdPartyReference: "11114");
+    inputTransactionID: 'input_TransactionID',
+    inputSecurityCredential: 'input_SecurityCredential',
+    inputInitiatorIdentifier: 'input_InitiatorIdentifier',
+    inputThirdPartyReference: 'input_ThirdPartyReference',
+    inputServiceProviderCode: 'input_ServiceProviderCode',
+    inputReversalAmount: montant, // Optional
+  );
 ```
 
 #### Perform the api call
@@ -123,26 +108,18 @@ ReversalRequest payload = ReversalRequest(
 MpesaTransaction.reversal(token, payload);
 ```
 
-### Handle response
-
-All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
-
-```dart
-Response response = await MpesaTransaction.reversal(token, payload);
-    print(response.body);
-```
-
 ### B2B Api Call
 
 #### Initialize your payload
 
 ```dart
 TransferRequest payload = TransferRequest(
-        inputTransactionReference: 'T12344C',
-        inputPrimaryPartyCode: '171717',
-        inputAmount: inputAmount,
-        inputThirdPartyReference: '11114',
-        inputReceiverPartyCode: "979797");
+    inputTransactionReference: 'input_TransactionReference',
+    inputAmount: inputAmount,
+    inputThirdPartyReference: 'input_ThirdPartyReference',
+    inputPrimaryPartyCode: 'input_PrimaryPartyCode',
+    inputReceiverPartyCode: 'input_ReceiverPartyCode',
+  );
 ```
 
 #### Perform the api call
@@ -151,32 +128,30 @@ TransferRequest payload = TransferRequest(
 MpesaTransaction.b2b(token, payload);
 ```
 
-### Handle response
-
-All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
-
-```dart
-    Response response = await MpesaTransaction.b2b(token, payload);
-    print(response.body);
-```
-
-### TRANSACTION STATUS Api Call
+### Query Transaction Status Api Call
 
 #### Perform the api call
 
 ```dart
 MpesaTransaction.getTransactionStatus(
-        token, "11114", transactionId, "171717");
+    token,
+    'input_ThirdPartyReference',
+    'input_QueryReference',
+    'input_ServiceProviderCode',
+  );
 ```
 
-### Handle response
+## Handle Response
 
-All you need is assigning your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async function
+All transaction methods returned an http response. So what you have to do is assign your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async task.
 
 ```dart
-   Response response = await MpesaTransaction.getTransactionStatus(
-        token, "11114", transactionId, "171717");
+Response response = await MpesaTransaction.c2b(token, payload);
 print(response.body);
+
+if(response.statusCode == 201) {  // if is resource created!
+  // Do something!
+}
 ```
 
 ## Credits
