@@ -1,6 +1,8 @@
 # mpesa_sdk_dart
 
-[![pub package](https://img.shields.io/pub/v/provider.svg)](https://pub.dev/packages/mpesa_sdk_dart)
+[![Pub Version](https://img.shields.io/pub/v/mpesa_sdk_dart?color=blue)](https://pub.dev/packages/mpesa_sdk_dart)
+![GitHub](https://img.shields.io/github/license/realrgt/mpesa_sdk_dart)
+![GitHub repo size](https://img.shields.io/github/repo-size/realrgt/mpesa_sdk_dart?color=red)
 
 Dart package for M-Pesa API (Mozambique)
 
