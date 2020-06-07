@@ -1,6 +1,6 @@
 name: mpesa_sdk_dart
-description: Dart package for M-Pesa API (Mozambique)
-version: 0.0.1
+description: A Dart package for M-Pesa API (Mozambique). This package can be used in every dart frameworks as it's written in plain dart.
+version: 1.0.0
 author: Ergito Vilanculos <ergitorubildo@gmail.com>
 repository: https://github.com/realrgt/mpesa_sdk_dart
 homepage: https://github.com/realrgt/mpesa_sdk_dart
