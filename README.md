@@ -161,6 +161,7 @@ if(response.statusCode == 201) {  // if is resource created!
 | Contributors |
 |--------------|
 | [Ergito Vilanculos](https://github.com/realrgt) |
+| [Igor Sambo](https://github.com/LSambo02) |
 
 ----------------------------
 
