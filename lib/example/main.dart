@@ -3,7 +3,7 @@ import 'package:mpesa_sdk_dart/mpesa_sdk_dart.dart';
 
 main() async {
 
-  String token = MpesaConfig.getBearerToken(
+  String? token = MpesaConfig.getBearerToken(
     'API_KEY_HERE',
     'PUBLIC_KEY_HERE',
   );
