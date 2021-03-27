@@ -52,60 +52,6 @@ class RsaKeyHelper {
     return rsaPublicKey;
   }
 
-  /// Sign plain text with Private Key
-  ///
-  /// Given a plain text [String] and a [RSAPrivateKey], decrypt the text using
-  /// a [RSAEngine] cipher
-  String sign(String plainText, RSAPrivateKey privateKey) {
-    var signer = RSASigner(SHA256Digest(), "0609608648016503040201");
-    signer.init(true, PrivateKeyParameter<RSAPrivateKey>(privateKey));
-    return base64Encode(
-        signer.generateSignature(createUint8ListFromString(plainText)).bytes);
-  }
-
-  /// Creates a [Uint8List] from a string to be signed
-  Uint8List createUint8ListFromString(String s) {
-    var codec = Utf8Codec(allowMalformed: true);
-    return Uint8List.fromList(codec.encode(s));
-  }
-
-  /// Decode Private key from PEM Format
-  ///
-  /// Given a base64 encoded PEM [String] with correct headers and footers, return a
-  /// [RSAPrivateKey]
-  RSAPrivateKey parsePrivateKeyFromPem(pemString) {
-    List<int> privateKeyDER = decodePEM(pemString);
-    var asn1Parser = ASN1Parser(privateKeyDER as Uint8List);
-    var topLevelSeq = asn1Parser.nextObject() as ASN1Sequence;
-
-    var modulus, privateExponent, p, q;
-    // Depending on the number of elements, we will either use PKCS1 or PKCS8
-    if (topLevelSeq.elements.length == 3) {
-      var privateKey = topLevelSeq.elements[2];
-
-      asn1Parser = ASN1Parser(privateKey.contentBytes()!);
-      var pkSeq = asn1Parser.nextObject() as ASN1Sequence;
-
-      modulus = pkSeq.elements[1] as ASN1Integer;
-      privateExponent = pkSeq.elements[3] as ASN1Integer;
-      p = pkSeq.elements[4] as ASN1Integer;
-      q = pkSeq.elements[5] as ASN1Integer;
-    } else {
-      modulus = topLevelSeq.elements[1] as ASN1Integer;
-      privateExponent = topLevelSeq.elements[3] as ASN1Integer;
-      p = topLevelSeq.elements[4] as ASN1Integer;
-      q = topLevelSeq.elements[5] as ASN1Integer;
-    }
-
-    RSAPrivateKey rsaPrivateKey = RSAPrivateKey(
-        modulus.valueAsBigInteger,
-        privateExponent.valueAsBigInteger,
-        p.valueAsBigInteger,
-        q.valueAsBigInteger);
-
-    return rsaPrivateKey;
-  }
-
   /// Takes in a PEM [String], removes its prefix & suffix, returns
   /// a [Unit8List]
   List<int> decodePEM(String pem) {
@@ -158,53 +104,6 @@ class RsaKeyHelper {
     return pem;
   }
 
-  /// Encode Private key to PEM Format
-  ///
-  /// Given [RSAPrivateKey] returns a base64 encoded [String] with standard PEM headers and footers
-  String encodePrivateKeyToPemPKCS1(RSAPrivateKey privateKey) {
-    var topLevel = ASN1Sequence();
-
-    var version = ASN1Integer(BigInt.from(0));
-    var modulus = ASN1Integer(privateKey.n!);
-    var publicExponent = ASN1Integer(privateKey.exponent!);
-    var privateExponent = ASN1Integer(privateKey.d!);
-    var p = ASN1Integer(privateKey.p!);
-    var q = ASN1Integer(privateKey.q!);
-    var dP = privateKey.d! % (privateKey.p! - BigInt.from(1));
-    var exp1 = ASN1Integer(dP);
-    var dQ = privateKey.d! % (privateKey.q! - BigInt.from(1));
-    var exp2 = ASN1Integer(dQ);
-    var iQ = privateKey.q!.modInverse(privateKey.p!);
-    var co = ASN1Integer(iQ);
-
-    topLevel.add(version);
-    topLevel.add(modulus);
-    topLevel.add(publicExponent);
-    topLevel.add(privateExponent);
-    topLevel.add(p);
-    topLevel.add(q);
-    topLevel.add(exp1);
-    topLevel.add(exp2);
-    topLevel.add(co);
-
-    var dataBase64 = base64.encode(topLevel.encodedBytes);
-
-    return """-----BEGIN PRIVATE KEY-----\r\n$dataBase64\r\n-----END PRIVATE KEY-----""";
-  }
-
-  /// Encode Public key to PEM Format
-  ///
-  /// Given [RSAPublicKey] returns a base64 encoded [String] with standard PEM headers and footers
-  String encodePublicKeyToPemPKCS1(RSAPublicKey publicKey) {
-    var topLevel = ASN1Sequence();
-
-    topLevel.add(ASN1Integer(publicKey.modulus!));
-    topLevel.add(ASN1Integer(publicKey.exponent!));
-
-    var dataBase64 = base64.encode(topLevel.encodedBytes);
-    return """-----BEGIN PUBLIC KEY-----\r\n$dataBase64\r\n-----END PUBLIC KEY-----""";
-  }
-
   /// Encrypts ApiKey with its PublicKey
   ///
   /// Given a [String] & [RSAPublicKey] returns an [Unit8List] cipherText
@@ -216,25 +115,4 @@ class RsaKeyHelper {
     // return  String.fromCharCodes(cipherText);
     return cipherText;
   }
-
-  String decrypt(String ciphertext, RSAPrivateKey privateKey) {
-    var cipher = RSAEngine()
-      ..init(false, PrivateKeyParameter<RSAPrivateKey>(privateKey));
-    var decrypted = cipher.process(Uint8List.fromList(ciphertext.codeUnits));
-
-    return String.fromCharCodes(decrypted);
-  }
-}
-
-/// Generate a [PublicKey] and [PrivateKey] pair
-///
-/// Returns a [AsymmetricKeyPair] based on the [RSAKeyGenerator] with custom parameters,
-/// including a [SecureRandom]
-AsymmetricKeyPair<PublicKey, PrivateKey> getRsaKeyPair(
-    SecureRandom secureRandom) {
-  var rsapars = RSAKeyGeneratorParameters(BigInt.from(65537), 2048, 5);
-  var params = ParametersWithRandom(rsapars, secureRandom);
-  var keyGenerator = RSAKeyGenerator();
-  keyGenerator.init(params);
-  return keyGenerator.generateKeyPair();
 }

@@ -4,12 +4,12 @@
 
 import 'dart:convert';
 
-PaymentRequest paymentRequestFromJson(String str) => PaymentRequest.fromJson(json.decode(str));
+PaymentRequest paymentRequestFromJson(String str) =>
+    PaymentRequest.fromJson(json.decode(str));
 
 String paymentRequestToJson(PaymentRequest data) => json.encode(data.toJson());
 
 class PaymentRequest {
-
   PaymentRequest({
     this.inputTransactionReference,
     this.inputCustomerMsisdn,
@@ -25,19 +25,18 @@ class PaymentRequest {
   String? inputServiceProviderCode;
 
   factory PaymentRequest.fromJson(Map<String, dynamic> json) => PaymentRequest(
-    inputTransactionReference: json["input_TransactionReference"],
-    inputCustomerMsisdn: json["input_CustomerMSISDN"],
-    inputAmount: json["input_Amount"],
-    inputThirdPartyReference: json["input_ThirdPartyReference"],
-    inputServiceProviderCode: json["input_ServiceProviderCode"],
-  );
+        inputTransactionReference: json["input_TransactionReference"],
+        inputCustomerMsisdn: json["input_CustomerMSISDN"],
+        inputAmount: json["input_Amount"],
+        inputThirdPartyReference: json["input_ThirdPartyReference"],
+        inputServiceProviderCode: json["input_ServiceProviderCode"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "input_TransactionReference": inputTransactionReference,
-    "input_CustomerMSISDN": inputCustomerMsisdn,
-    "input_Amount": inputAmount.toString(),
-    "input_ThirdPartyReference": inputThirdPartyReference,
-    "input_ServiceProviderCode": inputServiceProviderCode,
-  };
-  
+        "input_TransactionReference": inputTransactionReference,
+        "input_CustomerMSISDN": inputCustomerMsisdn,
+        "input_Amount": inputAmount.toString(),
+        "input_ThirdPartyReference": inputThirdPartyReference,
+        "input_ServiceProviderCode": inputServiceProviderCode,
+      };
 }

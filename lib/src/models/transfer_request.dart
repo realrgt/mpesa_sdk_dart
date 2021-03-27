@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-TransferRequest transferRequestFromJson(String str) => TransferRequest.fromJson(json.decode(str));
+TransferRequest transferRequestFromJson(String str) =>
+    TransferRequest.fromJson(json.decode(str));
 
-String transferRequestToJson(TransferRequest data) => json.encode(data.toJson());
+String transferRequestToJson(TransferRequest data) =>
+    json.encode(data.toJson());
 
 class TransferRequest {
-
   String? inputTransactionReference;
   double? inputAmount;
   String? inputThirdPartyReference;
@@ -35,7 +36,7 @@ class TransferRequest {
     data['input_ThirdPartyReference'] = this.inputThirdPartyReference;
     data['input_PrimaryPartyCode'] = this.inputPrimaryPartyCode;
     data['input_ReceiverPartyCode'] = this.inputReceiverPartyCode;
+
     return data;
   }
-  
 }

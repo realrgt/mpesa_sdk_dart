@@ -16,6 +16,7 @@ Ready Methods/APIs
 - [x] REVERSAL
 
 ## Requisites
+
 We highly recommend reading Mpesa API [docs](https://developer.mpesa.vm.co.mz/) first!
 
 You Will need a few things from there before development.
@@ -36,6 +37,7 @@ dependencies:
 ```
 
 Import in your Flutter app or plain dart app.
+
 ```dart
 import 'package:mpesa_sdk_dart/mpesa_sdk_dart.dart';
 ```
@@ -66,7 +68,7 @@ PaymentRequest payload = PaymentRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.c2b(token, payload);
+MpesaTransaction.c2b(apiHost, token, payload);
 ```
 
 ### B2C Api Call
@@ -86,7 +88,7 @@ PaymentRequest payload = PaymentRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.b2c(token, payload);
+MpesaTransaction.b2c(apiHost, token, payload);
 ```
 
 ### Reversal Api Call
@@ -107,7 +109,7 @@ ReversalRequest payload = ReversalRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.reversal(token, payload);
+MpesaTransaction.reversal(apiHost, token, payload);
 ```
 
 ### B2B Api Call
@@ -127,7 +129,7 @@ TransferRequest payload = TransferRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.b2b(token, payload);
+MpesaTransaction.b2b(apiHost, token, payload);
 ```
 
 ### Query Transaction Status Api Call
@@ -136,6 +138,7 @@ MpesaTransaction.b2b(token, payload);
 
 ```dart
 MpesaTransaction.getTransactionStatus(
+    apiHost,
     token,
     'input_ThirdPartyReference',
     'input_QueryReference',
@@ -148,22 +151,13 @@ MpesaTransaction.getTransactionStatus(
 All transaction methods returned an http response. So what you have to do is assign your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async task.
 
 ```dart
-Response response = await MpesaTransaction.c2b(token, payload);
+Response response = await MpesaTransaction.c2b(apiHost, token, payload);
 print(response.body);
 
 if(response.statusCode == 201) {  // if is resource created!
   // Do something!
 }
 ```
-
-## Credits
-
-| Contributors |
-|--------------|
-| [Ergito Vilanculos](https://github.com/realrgt) |
-| [Igor Sambo](https://github.com/LSambo02) |
-| [Eleuterio Notico](https://github.com/Eleuterio258) |
-----------------------------
 
 ## Copyright and license
 
@@ -188,5 +182,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-

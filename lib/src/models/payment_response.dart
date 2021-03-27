@@ -6,7 +6,6 @@ PaymentResponse responseFromJson(String str) =>
 String responseToJson(PaymentResponse data) => json.encode(data.toJson());
 
 class PaymentResponse {
-
   String? outputResponseCode;
   String? outputResponseDesc;
   String? outputTransactionID;
@@ -36,7 +35,7 @@ class PaymentResponse {
     data['output_TransactionID'] = this.outputTransactionID;
     data['output_ConversationID'] = this.outputConversationID;
     data['output_ThirdPartyReference'] = this.outputThirdPartyReference;
+
     return data;
   }
-  
 }

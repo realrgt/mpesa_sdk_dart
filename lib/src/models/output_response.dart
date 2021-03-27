@@ -13,13 +13,14 @@ class OutputResponse {
   String? outputThirdPartyReference;
   String? outputResponseTransactionStatus;
 
-  OutputResponse(
-      {this.outputResponseCode,
-      this.outputResponseDesc,
-      this.outputTransactionID,
-      this.outputConversationID,
-      this.outputThirdPartyReference,
-      this.outputResponseTransactionStatus});
+  OutputResponse({
+    this.outputResponseCode,
+    this.outputResponseDesc,
+    this.outputTransactionID,
+    this.outputConversationID,
+    this.outputThirdPartyReference,
+    this.outputResponseTransactionStatus,
+  });
 
   OutputResponse.fromJson(Map<String, dynamic> json) {
     outputResponseCode = json['output_ResponseCode'];
@@ -39,6 +40,7 @@ class OutputResponse {
     data['output_ThirdPartyReference'] = this.outputThirdPartyReference;
     data['output_ResponseTransactionStatus'] =
         this.outputResponseTransactionStatus;
+
     return data;
   }
 }

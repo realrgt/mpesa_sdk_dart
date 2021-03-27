@@ -11,10 +11,13 @@ class MpesaTransaction {
   /// Given a [token] and an instance of [PaymentRequest],
   /// returns an http [Response]
   ///
-  static c2b(String? token, PaymentRequest paymentRequest) async {
+  static c2b(
+    String? token,
+    String apiHost,
+    PaymentRequest paymentRequest,
+  ) async {
     http.Response? response;
-    var url =
-        'https://api.sandbox.vm.co.mz:18352/ipg/v1x/c2bPayment/singleStage/';
+    var url = 'https://$apiHost:18352/ipg/v1x/c2bPayment/singleStage/';
     await http
         .post(
       Uri.parse(url),
@@ -39,9 +42,13 @@ class MpesaTransaction {
   /// Given a [token] and an instance of [PaymentRequest],
   /// returns an http [Response]
   ///
-  static b2c(String token, PaymentRequest paymentRequest) async {
+  static b2c(
+    String token,
+    String apiHost,
+    PaymentRequest paymentRequest,
+  ) async {
     http.Response? response;
-    var url = 'https://api.sandbox.vm.co.mz:18345/ipg/v1x/b2cPayment/';
+    var url = 'https://$apiHost:18345/ipg/v1x/b2cPayment/';
     await http
         .post(
       Uri.parse(url),
@@ -66,9 +73,13 @@ class MpesaTransaction {
   /// Given a [token] and an istance of [ReversalRequest],
   /// returns an http [Response]
   ///
-  static reversal(String token, ReversalRequest reversalRequest) async {
+  static reversal(
+    String token,
+    String apiHost,
+    ReversalRequest reversalRequest,
+  ) async {
     http.Response? response;
-    var url = 'https://api.sandbox.vm.co.mz:18354/ipg/v1x/reversal/';
+    var url = 'https://$apiHost:18354/ipg/v1x/reversal/';
     await http
         .put(
       Uri.parse(url),
@@ -91,11 +102,16 @@ class MpesaTransaction {
   /// Initiates a transaction Query on the M-Pesa API.
   /// and returns an http [Response]
   ///
-  static getTransactionStatus(token, inputThirdPartyReference,
-      inputQueryReference, inputServiceProviderCode) async {
+  static getTransactionStatus(
+    token,
+    apiHost,
+    inputThirdPartyReference,
+    inputQueryReference,
+    inputServiceProviderCode,
+  ) async {
     http.Response? response;
     var url =
-        'https://api.sandbox.vm.co.mz:18353/ipg/v1x/queryTransactionStatus/?input_ThirdPartyReference=$inputThirdPartyReference&input_QueryReference=$inputQueryReference&input_ServiceProviderCode=$inputServiceProviderCode';
+        'https://$apiHost:18353/ipg/v1x/queryTransactionStatus/?input_ThirdPartyReference=$inputThirdPartyReference&input_QueryReference=$inputQueryReference&input_ServiceProviderCode=$inputServiceProviderCode';
     await http.get(
       Uri.parse(url),
       headers: {
@@ -116,9 +132,13 @@ class MpesaTransaction {
   /// Given a [token] and an instance of [PaymentRequest],
   /// returns an http [Response]
   ///
-  static b2b(String token, TransferRequest transferRequest) async {
+  static b2b(
+    String token,
+    String apiHost,
+    TransferRequest transferRequest,
+  ) async {
     http.Response? response;
-    var url = 'https://api.sandbox.vm.co.mz:18349/ipg/v1x/b2bPayment/';
+    var url = 'https://$apiHost:18349/ipg/v1x/b2bPayment/';
     await http
         .post(
       Uri.parse(url),
