@@ -7,11 +7,11 @@ String responseToJson(PaymentResponse data) => json.encode(data.toJson());
 
 class PaymentResponse {
 
-  String outputResponseCode;
-  String outputResponseDesc;
-  String outputTransactionID;
-  String outputConversationID;
-  String outputThirdPartyReference;
+  String? outputResponseCode;
+  String? outputResponseDesc;
+  String? outputTransactionID;
+  String? outputConversationID;
+  String? outputThirdPartyReference;
 
   PaymentResponse({
     this.outputResponseCode,

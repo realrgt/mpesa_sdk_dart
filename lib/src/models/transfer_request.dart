@@ -6,11 +6,11 @@ String transferRequestToJson(TransferRequest data) => json.encode(data.toJson())
 
 class TransferRequest {
 
-  String inputTransactionReference;
-  double inputAmount;
-  String inputThirdPartyReference;
-  String inputPrimaryPartyCode;
-  String inputReceiverPartyCode;
+  String? inputTransactionReference;
+  double? inputAmount;
+  String? inputThirdPartyReference;
+  String? inputPrimaryPartyCode;
+  String? inputReceiverPartyCode;
 
   TransferRequest({
     this.inputTransactionReference,

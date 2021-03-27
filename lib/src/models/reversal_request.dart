@@ -6,12 +6,12 @@ String reversalRequestToJson(ReversalRequest data) => json.encode(data.toJson())
 
 class ReversalRequest {
 
-  String inputTransactionID;
-  String inputSecurityCredential;
-  String inputInitiatorIdentifier;
-  String inputThirdPartyReference;
-  String inputServiceProviderCode;
-  double inputReversalAmount;
+  String? inputTransactionID;
+  String? inputSecurityCredential;
+  String? inputInitiatorIdentifier;
+  String? inputThirdPartyReference;
+  String? inputServiceProviderCode;
+  double? inputReversalAmount;
 
   ReversalRequest({
     this.inputTransactionID,

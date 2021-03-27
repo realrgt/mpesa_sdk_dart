@@ -162,14 +162,14 @@ if(response.statusCode == 201) {  // if is resource created!
 |--------------|
 | [Ergito Vilanculos](https://github.com/realrgt) |
 | [Igor Sambo](https://github.com/LSambo02) |
-
+| [Eleuterio Notico](https://github.com/Eleuterio258) |
 ----------------------------
 
 ## Copyright and license
 
 MIT License
 
-Copyright (c) 2020 Ergito Vilanculos
+Copyright (c) 2020-2021 Ergito Vilanculos
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

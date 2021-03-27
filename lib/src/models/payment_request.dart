@@ -18,11 +18,11 @@ class PaymentRequest {
     this.inputServiceProviderCode,
   });
 
-  String inputTransactionReference;
-  String inputCustomerMsisdn;
-  double inputAmount;
-  String inputThirdPartyReference;
-  String inputServiceProviderCode;
+  String? inputTransactionReference;
+  String? inputCustomerMsisdn;
+  double? inputAmount;
+  String? inputThirdPartyReference;
+  String? inputServiceProviderCode;
 
   factory PaymentRequest.fromJson(Map<String, dynamic> json) => PaymentRequest(
     inputTransactionReference: json["input_TransactionReference"],
