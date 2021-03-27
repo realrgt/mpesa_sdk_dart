@@ -12,7 +12,6 @@ Ready Methods/APIs
 - [x] B2B
 - [x] B2C
 - [x] TRANSACTION STATUS
-- [ ] ACCOUNT BALANCE
 - [x] REVERSAL
 
 ## Requisites
@@ -33,7 +32,7 @@ Add dependency in pubspec.yaml
 
 ```yaml
 dependencies:
-  mpesa_sdk_dart: [ADD_LATEST_VERSION_HERE]
+  mpesa_sdk_dart: <latest_version>
 ```
 
 Import in your Flutter app or plain dart app.
