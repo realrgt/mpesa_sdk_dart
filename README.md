@@ -67,7 +67,7 @@ PaymentRequest payload = PaymentRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.c2b(apiHost, token, payload);
+MpesaTransaction.c2b(token, apiHost, payload);
 ```
 
 ### B2C Api Call
@@ -87,7 +87,7 @@ PaymentRequest payload = PaymentRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.b2c(apiHost, token, payload);
+MpesaTransaction.b2c(token, apiHost, payload);
 ```
 
 ### Reversal Api Call
@@ -108,7 +108,7 @@ ReversalRequest payload = ReversalRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.reversal(apiHost, token, payload);
+MpesaTransaction.reversal(token, apiHost, payload);
 ```
 
 ### B2B Api Call
@@ -128,7 +128,7 @@ TransferRequest payload = TransferRequest(
 #### Perform the api call
 
 ```dart
-MpesaTransaction.b2b(apiHost, token, payload);
+MpesaTransaction.b2b(token, apiHost, payload);
 ```
 
 ### Query Transaction Status Api Call
@@ -137,8 +137,8 @@ MpesaTransaction.b2b(apiHost, token, payload);
 
 ```dart
 MpesaTransaction.getTransactionStatus(
-    apiHost,
     token,
+    apiHost,
     'input_ThirdPartyReference',
     'input_QueryReference',
     'input_ServiceProviderCode',
@@ -150,7 +150,7 @@ MpesaTransaction.getTransactionStatus(
 All transaction methods returned an http response. So what you have to do is assign your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async task.
 
 ```dart
-Response response = await MpesaTransaction.c2b(apiHost, token, payload);
+Response response = await MpesaTransaction.c2b(token, apiHost, payload);
 print(response.body);
 
 if(response.statusCode == 201) {  // if is resource created!
