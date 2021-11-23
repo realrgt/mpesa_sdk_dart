@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:mpesa_sdk_dart/src/models/payment_request.dart';
-import 'package:mpesa_sdk_dart/src/models/reversal_request.dart';
-import 'package:mpesa_sdk_dart/src/models/transfer_request.dart';
+
+import '../models/payment_request.dart';
+import '../models/reversal_request.dart';
+import '../models/transfer_request.dart';
 
 class MpesaTransaction {
   /// Initiates a C2B transaction on the M-Pesa API.
@@ -12,7 +13,7 @@ class MpesaTransaction {
   /// returns an http [Response]
   ///
   static c2b(
-    String? token,
+    String token,
     String apiHost,
     PaymentRequest paymentRequest,
   ) async {
@@ -21,11 +22,7 @@ class MpesaTransaction {
     await http
         .post(
       Uri.parse(url),
-      headers: {
-        'content-type': 'application/json',
-        'authorization': '$token',
-        'origin': '*',
-      },
+      headers: getHeaders(token),
       body: paymentRequestToJson(paymentRequest),
       encoding: utf8,
     )
@@ -52,11 +49,7 @@ class MpesaTransaction {
     await http
         .post(
       Uri.parse(url),
-      headers: {
-        'content-type': 'application/json',
-        'authorization': '$token',
-        'origin': '*',
-      },
+      headers: getHeaders(token),
       body: paymentRequestToJson(paymentRequest),
       encoding: utf8,
     )
@@ -83,11 +76,7 @@ class MpesaTransaction {
     await http
         .put(
       Uri.parse(url),
-      headers: {
-        'content-type': 'application/json',
-        'authorization': '$token',
-        'origin': '*',
-      },
+      headers: getHeaders(token),
       body: reversalRequestToJson(reversalRequest),
       encoding: utf8,
     )
@@ -112,14 +101,12 @@ class MpesaTransaction {
     http.Response? response;
     var url =
         'https://$apiHost:18353/ipg/v1x/queryTransactionStatus/?input_ThirdPartyReference=$inputThirdPartyReference&input_QueryReference=$inputQueryReference&input_ServiceProviderCode=$inputServiceProviderCode';
-    await http.get(
+    await http
+        .get(
       Uri.parse(url),
-      headers: {
-        'content-type': 'application/json',
-        'authorization': '$token',
-        'origin': '*',
-      },
-    ).then((res) {
+      headers: getHeaders(token),
+    )
+        .then((res) {
       print('${res.statusCode} :${res.reasonPhrase}');
       print(res.body);
       response = res;
@@ -142,11 +129,7 @@ class MpesaTransaction {
     await http
         .post(
       Uri.parse(url),
-      headers: {
-        'content-type': 'application/json',
-        'authorization': '$token',
-        'origin': '*',
-      },
+      headers: getHeaders(token),
       body: transferRequestToJson(transferRequest),
       encoding: utf8,
     )
@@ -156,5 +139,13 @@ class MpesaTransaction {
       response = res;
     });
     return response;
+  }
+
+  static Map<String, String> getHeaders(String token) {
+    return {
+      'content-type': 'application/json',
+      'authorization': '$token',
+      'origin': '*',
+    };
   }
 }

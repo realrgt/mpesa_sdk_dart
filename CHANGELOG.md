@@ -1,6 +1,15 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+## [2.0.1] - 27/Mar/2021
+
+### Added
+
+- Example page
+
+### Changed
+
+- Refactor getBearerToken
+- Refactor request headers
 
 ## [1.0.1] - 27/Mar/2021
 
