@@ -24,8 +24,5 @@ Future<void> main() async {
     throw StateError('Transaction failed: ${response.data.outputResponseDesc}');
   }
 
-  print(
-      'Transaction successful! Response code: ${response.data.outputResponseCode}');
-
   client.close();
 }
