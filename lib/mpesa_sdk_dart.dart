@@ -1,9 +1,10 @@
-library mpesa_sdk_dart;
-
-export 'src/config/mpesa_config.dart';
-export 'src/repository/mpesa_transaction.dart';
+export 'src/config/mpesa_credentials.dart';
+export 'src/config/mpesa_environment.dart';
+export 'src/exceptions/mpesa_exception.dart';
+export 'src/models/mpesa_api_response.dart';
+export 'src/models/mpesa_result.dart';
 export 'src/models/payment_request.dart';
-
 export 'src/models/reversal_request.dart';
+export 'src/models/transaction_status_request.dart';
 export 'src/models/transfer_request.dart';
-export 'src/models/payment_response.dart';
+export 'src/mpesa_client.dart';

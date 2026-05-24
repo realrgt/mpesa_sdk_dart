@@ -1,20 +1,30 @@
 import 'package:mpesa_sdk_dart/mpesa_sdk_dart.dart';
 
-main() async {
-  String token = MpesaConfig.getBearerToken(
-    'API_KEY_HERE',
-    'PUBLIC_KEY_HERE',
+import 'mpesa_keys.dart';
+
+Future<void> main() async {
+  final client = MpesaClient(
+    credentials: const MpesaCredentials(
+      apiKey: apiKeyMpesa,
+      publicKey: publicKeyMpesa,
+    ),
+    environment: MpesaEnvironment.sandbox,
   );
 
-  String apiHost = 'api.sandbox.vm.co.mz'; // use {api.vm.co.mz} for production
-
-  PaymentRequest payload = PaymentRequest(
-    inputTransactionReference: 'T12344C',
-    inputCustomerMsisdn: '25884xxxxxxx',
-    inputAmount: 10.0,
-    inputThirdPartyReference: '11114',
-    inputServiceProviderCode: '171717', // business short code
+  final payload = PaymentRequest(
+    transactionReference: 'T12344C',
+    customerMsisdn: '258847522988',
+    amount: 8.0,
+    thirdPartyReference: '11114',
+    serviceProviderCode: '171717',
   );
 
-  await MpesaTransaction.c2b(token, apiHost, payload);
+  final response = await client.c2b(payload);
+  if (!response.data.isSuccessCode) {
+    throw StateError('Transaction failed: ${response.data.outputResponseDesc}');
+  }
+
+  print('Transaction successful! Response code: ${response.data.outputResponseCode}');
+
+  client.close();
 }

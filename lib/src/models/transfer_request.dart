@@ -1,42 +1,49 @@
-import 'dart:convert';
-
-TransferRequest transferRequestFromJson(String str) =>
-    TransferRequest.fromJson(json.decode(str));
-
-String transferRequestToJson(TransferRequest data) =>
-    json.encode(data.toJson());
-
 class TransferRequest {
-  String? inputTransactionReference;
-  double? inputAmount;
-  String? inputThirdPartyReference;
-  String? inputPrimaryPartyCode;
-  String? inputReceiverPartyCode;
-
   TransferRequest({
-    this.inputTransactionReference,
-    this.inputAmount,
-    this.inputThirdPartyReference,
-    this.inputPrimaryPartyCode,
-    this.inputReceiverPartyCode,
-  });
+    required this.transactionReference,
+    required this.amount,
+    required this.thirdPartyReference,
+    required this.primaryPartyCode,
+    required this.receiverPartyCode,
+  }) {
+    _requireNonEmpty(transactionReference, 'transactionReference');
+    _requireNonEmpty(thirdPartyReference, 'thirdPartyReference');
+    _requireNonEmpty(primaryPartyCode, 'primaryPartyCode');
+    _requireNonEmpty(receiverPartyCode, 'receiverPartyCode');
 
-  TransferRequest.fromJson(Map<String, dynamic> json) {
-    inputTransactionReference = json['input_TransactionReference'];
-    inputAmount = json['input_Amount'];
-    inputThirdPartyReference = json['input_ThirdPartyReference'];
-    inputPrimaryPartyCode = json['input_PrimaryPartyCode'];
-    inputReceiverPartyCode = json['input_ReceiverPartyCode'];
+    if (amount <= 0) {
+      throw ArgumentError.value(amount, 'amount', 'must be greater than zero');
+    }
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['input_TransactionReference'] = this.inputTransactionReference;
-    data['input_Amount'] = this.inputAmount;
-    data['input_ThirdPartyReference'] = this.inputThirdPartyReference;
-    data['input_PrimaryPartyCode'] = this.inputPrimaryPartyCode;
-    data['input_ReceiverPartyCode'] = this.inputReceiverPartyCode;
+  final String transactionReference;
+  final num amount;
+  final String thirdPartyReference;
+  final String primaryPartyCode;
+  final String receiverPartyCode;
 
-    return data;
+  factory TransferRequest.fromJson(Map<String, dynamic> json) {
+    return TransferRequest(
+      transactionReference:
+          (json['input_TransactionReference'] as String?) ?? '',
+      amount: (json['input_Amount'] as num?) ?? 0,
+      thirdPartyReference: (json['input_ThirdPartyReference'] as String?) ?? '',
+      primaryPartyCode: (json['input_PrimaryPartyCode'] as String?) ?? '',
+      receiverPartyCode: (json['input_ReceiverPartyCode'] as String?) ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'input_TransactionReference': transactionReference,
+        'input_Amount': amount,
+        'input_ThirdPartyReference': thirdPartyReference,
+        'input_PrimaryPartyCode': primaryPartyCode,
+        'input_ReceiverPartyCode': receiverPartyCode,
+      };
+
+  static void _requireNonEmpty(String value, String name) {
+    if (value.trim().isEmpty) {
+      throw ArgumentError.value(value, name, 'must not be empty');
+    }
   }
 }

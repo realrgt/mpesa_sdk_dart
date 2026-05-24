@@ -1,5 +1,6 @@
-const String apiKeyMpesa = 'oz5ier0z5y8bri7yhzusdrehzdmuz6xa';
-const String publicKeyMpesa =
+const String testApiKey = 'oz5ier0z5y8bri7yhzusdrehzdmuz6xa';
+
+const String testPublicKey =
     '''MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAmptSWqV7cGU
     UJJhUBxsMLonux24u+FoTlrb+4Kgc6092JIszmI1QUoMohaDDXSVueXx6I
     XwYGsjjWY32HGXj1iQhkALXfObJ4DqXn5h6E8y5/xQYNAyd5bpN5Z8r892

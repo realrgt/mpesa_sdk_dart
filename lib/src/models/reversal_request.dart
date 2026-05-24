@@ -1,46 +1,64 @@
-import 'dart:convert';
-
-ReversalRequest reversalRequestFromJson(String str) =>
-    ReversalRequest.fromJson(json.decode(str));
-
-String reversalRequestToJson(ReversalRequest data) =>
-    json.encode(data.toJson());
-
 class ReversalRequest {
-  String? inputTransactionID;
-  String? inputSecurityCredential;
-  String? inputInitiatorIdentifier;
-  String? inputThirdPartyReference;
-  String? inputServiceProviderCode;
-  double? inputReversalAmount;
-
   ReversalRequest({
-    this.inputTransactionID,
-    this.inputSecurityCredential,
-    this.inputInitiatorIdentifier,
-    this.inputThirdPartyReference,
-    this.inputServiceProviderCode,
-    this.inputReversalAmount,
-  });
+    required this.transactionId,
+    required this.securityCredential,
+    required this.initiatorIdentifier,
+    required this.thirdPartyReference,
+    required this.serviceProviderCode,
+    this.reversalAmount,
+  }) {
+    _requireNonEmpty(transactionId, 'transactionId');
+    _requireNonEmpty(securityCredential, 'securityCredential');
+    _requireNonEmpty(initiatorIdentifier, 'initiatorIdentifier');
+    _requireNonEmpty(thirdPartyReference, 'thirdPartyReference');
+    _requireNonEmpty(serviceProviderCode, 'serviceProviderCode');
 
-  ReversalRequest.fromJson(Map<String, dynamic> json) {
-    inputTransactionID = json['input_TransactionID'];
-    inputSecurityCredential = json['input_SecurityCredential'];
-    inputInitiatorIdentifier = json['input_InitiatorIdentifier'];
-    inputThirdPartyReference = json['input_ThirdPartyReference'];
-    inputServiceProviderCode = json['input_ServiceProviderCode'];
-    inputReversalAmount = json['input_ReversalAmount'];
+    if (reversalAmount != null && reversalAmount! <= 0) {
+      throw ArgumentError.value(
+        reversalAmount,
+        'reversalAmount',
+        'must be greater than zero when provided',
+      );
+    }
+  }
+
+  final String transactionId;
+  final String securityCredential;
+  final String initiatorIdentifier;
+  final String thirdPartyReference;
+  final String serviceProviderCode;
+  final num? reversalAmount;
+
+  factory ReversalRequest.fromJson(Map<String, dynamic> json) {
+    return ReversalRequest(
+      transactionId: (json['input_TransactionID'] as String?) ?? '',
+      securityCredential: (json['input_SecurityCredential'] as String?) ?? '',
+      initiatorIdentifier: (json['input_InitiatorIdentifier'] as String?) ?? '',
+      thirdPartyReference: (json['input_ThirdPartyReference'] as String?) ?? '',
+      serviceProviderCode: (json['input_ServiceProviderCode'] as String?) ?? '',
+      reversalAmount: json['input_ReversalAmount'] as num?,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['input_TransactionID'] = this.inputTransactionID;
-    data['input_SecurityCredential'] = this.inputSecurityCredential;
-    data['input_InitiatorIdentifier'] = this.inputInitiatorIdentifier;
-    data['input_ThirdPartyReference'] = this.inputThirdPartyReference;
-    data['input_ServiceProviderCode'] = this.inputServiceProviderCode;
-    data['input_ReversalAmount'] = this.inputReversalAmount;
+    final data = <String, dynamic>{
+      'input_TransactionID': transactionId,
+      'input_SecurityCredential': securityCredential,
+      'input_InitiatorIdentifier': initiatorIdentifier,
+      'input_ThirdPartyReference': thirdPartyReference,
+      'input_ServiceProviderCode': serviceProviderCode,
+    };
+
+    if (reversalAmount != null) {
+      data['input_ReversalAmount'] = reversalAmount;
+    }
 
     return data;
+  }
+
+  static void _requireNonEmpty(String value, String name) {
+    if (value.trim().isEmpty) {
+      throw ArgumentError.value(value, name, 'must not be empty');
+    }
   }
 }

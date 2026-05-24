@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.0.0-dev.1] - 24/May/2026
+
+### Changed
+
+- Migrated package to Dart 3.6+.
+- Replaced static API (`MpesaConfig`, `MpesaTransaction`) with client-centric `MpesaClient`.
+- Added immutable request models with constructor validation.
+- Added typed response wrapper (`MpesaResult`) and normalized API response model (`MpesaApiResponse`).
+- Added typed exception hierarchy for auth/api/network/serialization failures.
+- Reworked README and example to the new v3 API.
+
+### Added
+
+- Unit and contract tests for models, crypto helper, and HTTP client behavior.
+- Strict analyzer/lint configuration via `analysis_options.yaml`.
+- GitHub Actions CI workflow with format, analyze, test, and coverage generation.
+
 ## [2.0.1] - 27/Mar/2021
 
 ### Added

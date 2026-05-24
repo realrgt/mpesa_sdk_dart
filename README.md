@@ -2,182 +2,84 @@
 
 [![Pub Version](https://img.shields.io/pub/v/mpesa_sdk_dart?color=blue)](https://pub.dev/packages/mpesa_sdk_dart)
 ![GitHub](https://img.shields.io/github/license/realrgt/mpesa_sdk_dart)
-![GitHub repo size](https://img.shields.io/github/repo-size/realrgt/mpesa_sdk_dart?color=red)
 
-Dart package for M-Pesa API (Mozambique)
+A modern, typed Dart SDK for M-Pesa API (Mozambique).
 
-Ready Methods/APIs
+## Features
 
-- [x] C2B
-- [x] B2B
-- [x] B2C
-- [x] TRANSACTION STATUS
-- [x] REVERSAL
+- C2B, B2C, B2B, Reversal, and Transaction Status operations
+- Typed request/response models
+- Typed exceptions for auth, API, network, and serialization failures
+- One primary client API (`MpesaClient`) with explicit configuration
 
-## Requisites
+## Requirements
 
-We highly recommend reading Mpesa API [docs](https://developer.mpesa.vm.co.mz/) first!
+- Dart SDK `>=3.6.0 <4.0.0`
+- M-Pesa API Key and Public Key from [M-Pesa Developer Portal](https://developer.mpesa.vm.co.mz/)
 
-You Will need a few things from there before development.
-
-1. Api Key
-2. Public Key
-
-- Login or Register as a M-Pesa developer [here](https://developer.mpesa.vm.co.mz/accounts/login/?next=/accounts/signup/) if you haven't.
-- You will be issued with an API Key and a Public Key. You will use these to generate your access token.
-
-## Usage
-
-Add dependency in pubspec.yaml
+## Installation
 
 ```yaml
 dependencies:
   mpesa_sdk_dart: <latest_version>
 ```
 
-Import in your Flutter app or plain dart app.
+## Quick Start
 
 ```dart
 import 'package:mpesa_sdk_dart/mpesa_sdk_dart.dart';
-```
 
-### Generate a token
-
-```dart
-String token = MpesaConfig.getBearerToken(
-    'API_KEY_HERE',
-    'PUBLIC_KEY_HERE',
+Future<void> main() async {
+  final client = MpesaClient(
+    credentials: const MpesaCredentials(
+      apiKey: 'YOUR_API_KEY',
+      publicKey: 'YOUR_PUBLIC_KEY',
+    ),
+    environment: MpesaEnvironment.sandbox,
   );
-```
 
-### C2B Api Call
-
-#### Initialize your payload
-
-```dart
-PaymentRequest payload = PaymentRequest(
-    inputTransactionReference: 'inputTransactionReference',
-    inputCustomerMsisdn: '25884xxxxxxx',
-    inputAmount: inputAmount,
-    inputThirdPartyReference: 'inputThirdPartyReference',
-    inputServiceProviderCode: 'inputServiceProviderCode',
+  final response = await client.c2b(
+    PaymentRequest(
+      transactionReference: 'T12344C',
+      customerMsisdn: '258847522988',
+      amount: 10,
+      thirdPartyReference: '11114',
+      serviceProviderCode: '171717',
+    ),
   );
-```
 
-#### Perform the api call
+  if (!response.data.isSuccessCode) {
+    throw StateError('Transaction failed: ${response.data.outputResponseDesc}');
+  }
 
-```dart
-MpesaTransaction.c2b(token, apiHost, payload);
-```
-
-### B2C Api Call
-
-#### Initialize your payload
-
-```dart
-PaymentRequest payload = PaymentRequest(
-    inputTransactionReference: 'inputTransactionReference',
-    inputCustomerMsisdn: '25884xxxxxxx',
-    inputAmount: inputAmount,
-    inputThirdPartyReference: 'inputThirdPartyReference',
-    inputServiceProviderCode: 'inputServiceProviderCode',
-  );
-```
-
-#### Perform the api call
-
-```dart
-MpesaTransaction.b2c(token, apiHost, payload);
-```
-
-### Reversal Api Call
-
-#### Initialize your payload
-
-```dart
-ReversalRequest payload = ReversalRequest(
-    inputTransactionID: 'input_TransactionID',
-    inputSecurityCredential: 'input_SecurityCredential',
-    inputInitiatorIdentifier: 'input_InitiatorIdentifier',
-    inputThirdPartyReference: 'input_ThirdPartyReference',
-    inputServiceProviderCode: 'input_ServiceProviderCode',
-    inputReversalAmount: montant, // Optional
-  );
-```
-
-#### Perform the api call
-
-```dart
-MpesaTransaction.reversal(token, apiHost, payload);
-```
-
-### B2B Api Call
-
-#### Initialize your payload
-
-```dart
-TransferRequest payload = TransferRequest(
-    inputTransactionReference: 'input_TransactionReference',
-    inputAmount: inputAmount,
-    inputThirdPartyReference: 'input_ThirdPartyReference',
-    inputPrimaryPartyCode: 'input_PrimaryPartyCode',
-    inputReceiverPartyCode: 'input_ReceiverPartyCode',
-  );
-```
-
-#### Perform the api call
-
-```dart
-MpesaTransaction.b2b(token, apiHost, payload);
-```
-
-### Query Transaction Status Api Call
-
-#### Perform the api call
-
-```dart
-MpesaTransaction.getTransactionStatus(
-    token,
-    apiHost,
-    'input_ThirdPartyReference',
-    'input_QueryReference',
-    'input_ServiceProviderCode',
-  );
-```
-
-## Handle Response
-
-All transaction methods returned an http response. So what you have to do is assign your call to a property of type Response (From [http](https://pub.dev/packages/http) package). Note that this is an async task.
-
-```dart
-Response response = await MpesaTransaction.c2b(token, apiHost, payload);
-print(response.body);
-
-if(response.statusCode == 201) {  // if is resource created!
-  // Do something!
+  client.close();
 }
 ```
 
-## Copyright and license
+## Error Handling
 
-MIT License
+```dart
+try {
+  final result = await client.b2c(request);
+  // success
+} on MpesaAuthException catch (error) {
+  // invalid credentials/authorization
+} on MpesaApiException catch (error) {
+  // non-2xx response from M-Pesa
+} on MpesaNetworkException catch (error) {
+  // timeout or connectivity
+} on MpesaSerializationException catch (error) {
+  // invalid/non-JSON response payload
+}
+```
 
-Copyright (c) 2020-2021 Ergito Vilanculos
+## Migration from v2
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+- `MpesaConfig.getBearerToken(...)` is removed from public API. Token generation is handled internally by `MpesaClient`.
+- `MpesaTransaction.*` static calls are replaced by instance methods on `MpesaClient`.
+- Request model fields moved from `inputXxx` naming to clear Dart naming, while preserving the original API JSON keys internally.
+- Methods now return `MpesaResult<MpesaApiResponse>` and throw typed exceptions instead of leaking raw `http.Response`.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## License
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+MIT
