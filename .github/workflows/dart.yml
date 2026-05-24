@@ -32,8 +32,7 @@ jobs:
 
       - name: Convert coverage to lcov
         run: |
-          dart pub global activate coverage
-          dart pub global run coverage:format_coverage \
+          dart run coverage:format_coverage \
             --packages=.dart_tool/package_config.json \
             --in=coverage \
             --lcov \
@@ -42,6 +41,6 @@ jobs:
 
       - name: Enforce minimum line coverage (90%)
         run: |
-          COVERAGE=$(awk '/^LF:/{lf+=$2} /^LH:/{lh+=$2} END {if (lf==0) print 0; else print (100*lh/lf)}' coverage/lcov.info)
+          COVERAGE=$(awk -F: '/^LF:/{lf+=$2} /^LH:/{lh+=$2} END {if (lf==0) print 0; else print (100*lh/lf)}' coverage/lcov.info)
           echo "Computed line coverage: ${COVERAGE}%"
           awk -v cov="$COVERAGE" 'BEGIN { exit (cov < 90) ? 1 : 0 }'
