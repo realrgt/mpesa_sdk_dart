@@ -18,6 +18,17 @@ void main() {
   });
 
   group('MpesaClient', () {
+    test('exposes configured host and environment', () {
+      final client = MpesaClient(
+        credentials: credentials,
+        environment: MpesaEnvironment.production,
+      );
+
+      expect(client.environment, MpesaEnvironment.production);
+      expect(client.apiHost, 'api.vm.co.mz');
+      client.close();
+    });
+
     test('c2b sends expected payload, headers and endpoint', () async {
       late http.Request capturedRequest;
       final mockClient = MockClient((request) async {
@@ -61,6 +72,36 @@ void main() {
       expect(result.statusCode, 201);
       expect(result.data.outputResponseCode, 'INS-0');
       expect(result.headers['x-trace-id'], 'abc-123');
+    });
+
+    test('reversal uses PUT endpoint and handles empty body', () async {
+      late http.Request capturedRequest;
+      final mockClient = MockClient((request) async {
+        capturedRequest = request;
+        return http.Response('', 200);
+      });
+
+      final client = MpesaClient(
+        credentials: credentials,
+        httpClient: mockClient,
+      );
+
+      final result = await client.reversal(
+        ReversalRequest(
+          transactionId: 'TRX-1',
+          securityCredential: 'SEC',
+          initiatorIdentifier: 'INIT',
+          thirdPartyReference: 'TP-1',
+          serviceProviderCode: '171717',
+        ),
+      );
+
+      expect(capturedRequest.method, 'PUT');
+      expect(capturedRequest.url.port, 18354);
+      expect(capturedRequest.url.path, '/ipg/v1x/reversal/');
+      expect(result.statusCode, 200);
+      expect(result.data.outputResponseCode, '');
+      expect(result.data.outputResponseDesc, '');
     });
 
     test('queryTransactionStatus sends encoded query parameters', () async {
@@ -165,6 +206,31 @@ void main() {
             thirdPartyReference: 'R1',
             primaryPartyCode: '171717',
             receiverPartyCode: '181818',
+          ),
+        ),
+        throwsA(isA<MpesaSerializationException>()),
+      );
+    });
+
+    test('throws serialization exception when response json is not an object',
+        () async {
+      final mockClient = MockClient((_) async {
+        return http.Response('[1,2,3]', 200);
+      });
+
+      final client = MpesaClient(
+        credentials: credentials,
+        httpClient: mockClient,
+      );
+
+      expect(
+        () => client.b2c(
+          PaymentRequest(
+            transactionReference: 'T1',
+            customerMsisdn: '25884',
+            amount: 1,
+            thirdPartyReference: 'R1',
+            serviceProviderCode: '171717',
           ),
         ),
         throwsA(isA<MpesaSerializationException>()),
