@@ -5,8 +5,8 @@ import 'mpesa_keys.dart';
 Future<void> main() async {
   final client = MpesaClient(
     credentials: const MpesaCredentials(
-      apiKey: apiKeyMpesa,
-      publicKey: publicKeyMpesa,
+      apiKey: apiKey,
+      publicKey: publicKey,
     ),
     environment: MpesaEnvironment.sandbox,
   );
