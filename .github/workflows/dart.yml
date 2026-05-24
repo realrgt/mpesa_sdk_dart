@@ -5,6 +5,8 @@ on:
     branches:
       - main
       - master
+    tags:
+      - 'v*'
   pull_request:
 
 jobs:
@@ -44,3 +46,24 @@ jobs:
           COVERAGE=$(awk -F: '/^LF:/{lf+=$2} /^LH:/{lh+=$2} END {if (lf==0) print 0; else print (100*lh/lf)}' coverage/lcov.info)
           echo "Computed line coverage: ${COVERAGE}%"
           awk -v cov="$COVERAGE" 'BEGIN { exit (cov < 90) ? 1 : 0 }'
+
+  publish:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Publish to pub.dev
+        run: dart pub publish --force
