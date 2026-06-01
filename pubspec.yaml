@@ -1,6 +1,6 @@
 name: mpesa_sdk_dart
 description: A production-ready Dart SDK for M-Pesa API (Mozambique) with typed responses and robust error handling.
-version: 3.0.0-dev.1
+version: 3.0.0
 repository: https://github.com/realrgt/mpesa_sdk_dart
 homepage: https://github.com/realrgt/mpesa_sdk_dart
 

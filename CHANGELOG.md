@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0-dev.1] - 24/May/2026
+## [3.0.0] - 01/Jun/2026
 
 ### Changed
 
